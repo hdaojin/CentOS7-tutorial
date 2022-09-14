@@ -1,0 +1,13 @@
+site_name: CentOS7 tutorial
+theme:
+  name: material
+  language: zh
+  highlightjs: true
+  palette:
+    primary: black
+    accent: blue
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
