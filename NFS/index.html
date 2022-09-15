@@ -1,0 +1,1107 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+    
+    
+      
+        <title>NFS - CentOS7 tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2e8b5541.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nfs" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CentOS7 tutorial" class="md-header__button md-logo" aria-label="CentOS7 tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CentOS7 tutorial
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NFS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CentOS7 tutorial" class="md-nav__button md-logo" aria-label="CentOS7 tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    CentOS7 tutorial
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome to MkDocs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          NFS
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        NFS
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 基本概念
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    1.1. 版本和产品
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1. 版本和产品">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-nfsv2" class="md-nav__link">
+    1.1.1. NFSv2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-nfsv3" class="md-nav__link">
+    1.1.2. NFSv3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-nfsv4" class="md-nav__link">
+    1.1.3. NFSv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-nfsv41" class="md-nav__link">
+    1.1.4. NFSv4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-nfsv42" class="md-nav__link">
+    1.1.5. NFSv4.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116" class="md-nav__link">
+    1.1.6. 其他扩展
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    1.2. 平台
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    1.3. 典型实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 操作案例
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 操作案例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-nfs" class="md-nav__link">
+    2.1. 配置一个只读的NFS共享
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. 配置一个只读的NFS共享">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-nfs" class="md-nav__link">
+    2.1.1. 配置NFS服务器端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-nfs" class="md-nav__link">
+    2.1.2. 客户端访问NFS服务器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-nfs" class="md-nav__link">
+    2.2. 配置一个读写的NFS共享
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. 配置一个读写的NFS共享">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-nfs" class="md-nav__link">
+    2.2.1. 配置NFS服务器端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    2.2.2. 客户端访问测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-nfs" class="md-nav__link">
+    2.3. NFS用户映射关系
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. NFS用户映射关系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231-1" class="md-nav__link">
+    2.3.1. 对1的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232-3" class="md-nav__link">
+    2.3.2. 对3的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233-4" class="md-nav__link">
+    2.3.3. 对4的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234-nfs" class="md-nav__link">
+    2.3.4. nfs读写权限和用户映射参考
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-etcexports" class="md-nav__link">
+    2.4. /etc/exports基本选项
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-nfs" class="md-nav__link">
+    2.5. 配置NFS开机自动挂载
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5. 配置NFS开机自动挂载">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-fstab" class="md-nav__link">
+    2.5.1. 使用fstab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-auto-mounting" class="md-nav__link">
+    2.5.2. 配置auto-mounting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 实践任务
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 扩展指引
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 基本概念
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    1.1. 版本和产品
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1. 版本和产品">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-nfsv2" class="md-nav__link">
+    1.1.1. NFSv2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-nfsv3" class="md-nav__link">
+    1.1.2. NFSv3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-nfsv4" class="md-nav__link">
+    1.1.3. NFSv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-nfsv41" class="md-nav__link">
+    1.1.4. NFSv4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-nfsv42" class="md-nav__link">
+    1.1.5. NFSv4.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116" class="md-nav__link">
+    1.1.6. 其他扩展
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    1.2. 平台
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    1.3. 典型实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 操作案例
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 操作案例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-nfs" class="md-nav__link">
+    2.1. 配置一个只读的NFS共享
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1. 配置一个只读的NFS共享">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-nfs" class="md-nav__link">
+    2.1.1. 配置NFS服务器端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-nfs" class="md-nav__link">
+    2.1.2. 客户端访问NFS服务器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-nfs" class="md-nav__link">
+    2.2. 配置一个读写的NFS共享
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2. 配置一个读写的NFS共享">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-nfs" class="md-nav__link">
+    2.2.1. 配置NFS服务器端
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    2.2.2. 客户端访问测试
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-nfs" class="md-nav__link">
+    2.3. NFS用户映射关系
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3. NFS用户映射关系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231-1" class="md-nav__link">
+    2.3.1. 对1的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232-3" class="md-nav__link">
+    2.3.2. 对3的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233-4" class="md-nav__link">
+    2.3.3. 对4的测试
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234-nfs" class="md-nav__link">
+    2.3.4. nfs读写权限和用户映射参考
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-etcexports" class="md-nav__link">
+    2.4. /etc/exports基本选项
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-nfs" class="md-nav__link">
+    2.5. 配置NFS开机自动挂载
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5. 配置NFS开机自动挂载">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-fstab" class="md-nav__link">
+    2.5.1. 使用fstab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-auto-mounting" class="md-nav__link">
+    2.5.2. 配置auto-mounting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 实践任务
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 扩展指引
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="nfs">NFS</h1>
+<h2 id="1">1. 基本概念</h2>
+<p>网络文件系统（英语：Network File System，缩写作 NFS）是一种分布式文件系统，力求客户端主机可以访问服务器端文件，并且其过程与访问本地存储时一样，它由Sun微系统（已被甲骨文公司收购）开发，于1984年发布。</p>
+<p>它基于开放网络运算远程过程调用（ONC RPC）系统：一个开放、标准的RFC系统，任何人或组织都可以依据标准实现它。</p>
+<h3 id="11">1.1. 版本和产品</h3>
+<p>NFSv1 只在SUN公司内部用作实验目的。开发团队在NFSv1的基础上做了重大改进之后将其对外发布，版本NFSv2由此产生。</p>
+<h4 id="111-nfsv2">1.1.1. NFSv2</h4>
+<p>NFSv2最初在SunOS 2.0上面实现，1985年发布。</p>
+<p>参与NFSv2设计实现的人包括罗素·桑德柏格（Russel Sandberg）、鲍伯·里昂（Bob Lyon）、比尔·乔伊、史提夫·克莱曼（Steve Kleiman）等。NFSv2 的定义RFC 1094，于1989年3月发布。</p>
+<p>NFSv2 最初只是基于 UDP。设计者旨在保持服务端是无状态的，而将“锁”等机制的实现独立于核心协议之外。 这是一个关键决定，它使从服务器故障恢复变得简单：当一个服务器变得不可用时，所有的网络客户端冻结，但一旦服务器恢复，每一个尝试重传的状态都包含在每个RPC里面，这是由客户端存根发起的。这样的设计决策允许UNIX应用程序可以忽视服务器端的问题。</p>
+<p>虚拟文件系统接口很容易模块化地实现一个简单的协议。在1986年2月，诸多操作系统实现了对NFSv2的支持，例如 System V release 2、DOS，以及使用Eunice的VAX/VMS。</p>
+<p>由于 32-bit 的限制，NFSv2 只允读写文件起始2G大小的内容。</p>
+<h4 id="112-nfsv3">1.1.2. NFSv3</h4>
+<p>Version 3（RFC 1813，1995年6月）添加如下功能：</p>
+<p>支持 64 bit 文件大小和偏移量，即突破 2GB 文件大小的限制；
+支持服务端的异步写操作，提升写入性能；
+在许多响应报文中额外增加文件属性，避免用到这些属性时重新获取；
+增加 READDIRPLUS 调用，用于在遍历目录时获取文件描述符和文件属性；
+其他改进。
+在NFSv2发布后不久，NFSv3协议提案就在Sun Microsystems内部被提出，其主要目的是解决NFSv2进行同步写操作的性能问题。1992年7月的实现版本已经解决了NFSv2的许多不足之处，但是大文件支持（64位文件大小和偏移量）这一紧迫的问题还没有解决。这成为迪吉多公司的一个痛点，他们当时推出64位版本的Ultrix，以支持其新推出的64位RISC处理器Alpha 21064。在引入NFSv3时厂商们正在越来越多的支持TCP作为传输层协议。当时有些厂商已经在NFS version 2支持TCP做为传输层，Sun Microsystems 在发布NFSv3时也增加了将TCP作为传输层的支持。使用TCP做传输层使得NFS跨越 WAN 成为可能，并且可以突破 UDP 传输大小8K的限制，使用更大的读写数据单元。</p>
+<h4 id="113-nfsv4">1.1.3. NFSv4</h4>
+<p>NFSv4协议（RFC 3010，2000年12月；更新版 RFC 3530，2003年4月），借鉴了AFS（Andrew File System）和SMB/CIFS（Server Message Block）的特性，主要做了如下改进：性能提升，强制安全策略，引入有状态的协议。从NFSv4开始，协议的实现/开发工作不再是由SUN公司主导开发，而是改为由互联网工程任务组（IETF）开发。</p>
+<h4 id="114-nfsv41">1.1.4. NFSv4.1</h4>
+<p>NFSv4.1（RFC 5661，2010年1月）旨在为并行访问可横向扩展的集群服务（pNFS扩展）提供协议支持。</p>
+<h4 id="115-nfsv42">1.1.5. NFSv4.2</h4>
+<p>NFSv4.2 于2016年发布。</p>
+<h4 id="116">1.1.6. 其他扩展</h4>
+<p>WebNFS，一个NFSv2 v3的扩展，使得用户可以方便的通过网页浏览器与NFS服务端交互，且不受防火墙限制。在2007年，SUN公司开源了WebNFS客户端的实现。</p>
+<p>各种NFS相关的外挂／捆绑协议：</p>
+<ul>
+<li>字节区间建议锁网络锁定管理（Network Lock Manager，缩写 NLM）协议（支持 UNIX System V 文件锁定 APIs）。</li>
+<li>远程配额记录（RQUOTAD）协议；使NFS用户可以查看服务端数据存储配额。</li>
+</ul>
+<p>NFS over RDMA 是 NFS 对远程直接存储器访问（RDMA）协议的适配，就是将默认的传输层协议 TCP 替换为 RDMA。</p>
+<h3 id="12">1.2. 平台</h3>
+<p>NFS 通常用在 Unix 操作系统上（比如 Solaris、AIX及HP-UX）和其他 类Unix 的操作系统（例如 Linux 及 FreeBSD）。同时在其他一些操作系统也提供了NFS实现，例如经典的 Mac OS、OpenVMS、Microsoft Windows、OS/2、Novell NetWare 还有 IBM AS/400。可选的远程文件访问协议还有服务器消息块（SMB， 或 CIFS）、 苹果归档协议（AFP）、NetWare核心协议（NCP）和 OS/400 文件服务器文件系统（QFileSvr.400）。</p>
+<p>在Microsoft Windows系统上 SMB 和 NetWare核心协议（NCP）的使用比 NFS 更广泛；在Apple Macintosh 操作系统上则 AFP 的使用更广泛；而在 AS/400 系统上 QFileSvr.400 更为常用。Haiku 在2013年3月添加了 NFSv4 支持（作为Google 编码夏季项目的一部分）。</p>
+<h3 id="13">1.3. 典型实现</h3>
+<p>假设一个Unix风格的场景，其中一台计算机（客户端）需要访问存储在其他机器上的数据（NFS 服务器）：</p>
+<ol>
+<li>服务端实现 NFS 守护进程，默认运行 nfsd，用来使得数据可以被客户端访问。</li>
+<li>服务端系统管理员可以决定哪些资源可以被访问，导出目录的名字和参数，通常使用 /etc/exports 配置文件 和 exportfs 命令。</li>
+<li>服务端安全-管理员保证它可以组织和认证合法的客户端。</li>
+<li>服务端网络配置保证可以跟客户端透过防火墙进行协商。</li>
+<li>客户端请求导出的数据，通常调用一个 mount 命令。</li>
+<li>如果一切顺利，客户端的用户就可以通过已经挂载的文件系统查看和访问服务端的文件了。
+
+提醒：NFS自动挂载可以通过—可能是 /etc/fstab 或者自动安装管理进程。</li>
+</ol>
+<h2 id="2">2. 操作案例</h2>
+<p>+----------------------+                      |                       +-------------------------+
+| [    NFS Server    ]  |192.168.1.101  | 192.168.1.133  |    [    NFS Client    ]    |
+|    server01             +-----------------+------------------+        client01             |
+|                              |                                                |                                 |
++----------------------+                                               +-------------------------+</p>
+<h3 id="21-nfs">2.1. 配置一个只读的NFS共享</h3>
+<h4 id="211-nfs">2.1.1. 配置NFS服务器端</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">[root@server01 ~]# </span>yum -y install nfs-utils
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp"># </span><span class="o">[</span>root@server01 ~<span class="o">]</span><span class="c1"># vi /etc/idmapd.conf</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp"># </span>line <span class="m">5</span>: uncomment and change to your domain name
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp"># </span><span class="nv">Domain</span> <span class="o">=</span> server01
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">[root@server01 ~]# </span>mkdir /nfs_share
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">[root@server01 ~]# </span><span class="nb">cd</span> /nfs_share/
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">[root@server01 nfs_share]# </span><span class="nb">echo</span> <span class="s2">&quot;hello nfs on server01&quot;</span> &gt; nfs_test.txt
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">[root@server01 ~]# </span>vim /etc/exports
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp"># </span>write settings <span class="k">for</span> NFS exports
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="go">/nfs_share    192.168.1.0/24(ro)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="gp">[root@server01 ~]# </span>systemctl <span class="nb">enable</span> --now rpcbind  nfs-server
+</code></pre></div>
+<h4 id="212-nfs">2.1.2. 客户端访问NFS服务器</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">[root@client01 ~]# </span>yum -y install nfs-utils
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gp">[root@client01 ~]# </span>systemctl start rpcbind
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gp">[root@client01 ~]# </span>systemctl <span class="nb">enable</span> rpcbind
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="gp">[root@client01 ~]# </span>showmount -e <span class="m">192</span>.168.1.101
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">Export list for 192.168.1.101:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="go">/nfs_share 192.168.1.0/24</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="gp">[root@client01 ~]# </span>mount  -t nfs <span class="m">192</span>.168.1.101:/nfs_share   /mnt
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="gp"># </span><span class="k">if</span> you<span class="s1">&#39;d like to mount with NFSv3, add &#39;</span>-o <span class="nv">vers</span><span class="o">=</span><span class="m">3</span><span class="err">&#39;</span> option
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="gp">[root@client01 ~]# </span>df -h  <span class="p">|</span>grep  nfs
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="go">192.168.1.101:/nfs_share   17G  1.7G   16G   10% /mnt</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="gp">[root@client01 ~]# </span>mount <span class="p">|</span>grep  nfs_share
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="go">192.168.1.101:/nfs_share on /mnt type nfs4 (rw,relatime,vers=4.1,rsize=131072,wsize=131072,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.1.133,local_lock=none,addr=192.168.1.101)</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="gp">[root@client01 ~]# </span><span class="nb">cd</span> /mnt
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="gp">[root@client01 mnt]# </span>ls
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="go">nfs_test.txt</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="gp">[root@client01 mnt]# </span>cat nfs_test.txt 
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="go">hello nfs on server01</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="gp">[root@client01 mnt]# </span>touch abc.txt
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="go">touch: 无法创建&quot;abc.txt&quot;: 只读文件系统</span>
+</code></pre></div>
+<h3 id="22-nfs">2.2. 配置一个读写的NFS共享</h3>
+<h4 id="221-nfs">2.2.1. 配置NFS服务器端</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">[root@server01 /]# </span>vim /etc/exports
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">/nfs_share    192.168.1.0/24(rw)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="gp">[root@server01 /]# </span>chmod  <span class="m">777</span> /nfs_share/
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="gp">[root@server01 /]# </span>exportfs -av
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="go">exporting 192.168.1.0/24:/nfs_share</span>
+</code></pre></div>
+<h4 id="222">2.2.2. 客户端访问测试</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">[root@client01 mnt]# </span>touch abc.txt
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="gp">[root@client01 mnt]# </span>ll abc.txt 
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="go">-rw-r--r--. 1 nfsnobody nfsnobody 0 9月  13 19:07 abc.txt</span>
+</code></pre></div>
+<h3 id="23-nfs">2.3. NFS用户映射关系</h3>
+<ol>
+<li>对于普通用户，NFS默认保留文件的拥有者身份（uid）。Linux系统对于用户的识别是通过uid来完成，那么在客户端和服务器端，同一个uid对应的用户名可能一样，也可能不一样，或者不存在。</li>
+<li>对于root用户，NFS默认将其映射为nfsnobody。</li>
+<li>可以通过配置，取消nfs对于root用户的匿名映射。</li>
+<li>可以通过配置，将所有的用户都映射成为某个指定的用户。</li>
+</ol>
+<h4 id="231-1">2.3.1. 对1的测试</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp">[demo@client01 ~]$ </span>touch  /mnt/demo_test.txt
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gp">[demo@client01 ~]$ </span>ll /mnt/demo_test.txt 
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">-rw-rw-r--. 1 demo demo 0 9月  13 19:14 /mnt/demo_test.txt</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="gp">[root@server01 /]# </span>ll /nfs_share/demo_test.txt 
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">-rw-rw-r-- 1 1000 zhangsan 0 9月  13 19:14 /nfs_share/demo_test.txt</span>
+</code></pre></div>
+<h4 id="232-3">2.3.2. 对3的测试</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">/nfs_share    192.168.1.0/24(rw,no_root_squash)</span>
+</code></pre></div>
+<h4 id="233-4">2.3.3. 对4的测试</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">/nfs_share    192.168.1.0/24(rw,all_squash,anonuid=1001,anongid=1001)</span>
+</code></pre></div>
+<h4 id="234-nfs">2.3.4. nfs读写权限和用户映射参考</h4>
+<p>可以使用man exports查看。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>EXAMPLE
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>       # sample /etc/exports file
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>       /               master(rw) trusty(rw,no_root_squash)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>       /projects       proj*.local.domain(rw)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>       /usr            *.local.domain(ro) @trusted(rw)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>       /home/joe       pc001(rw,all_squash,anonuid=150,anongid=100)
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>       /pub            *(ro,insecure,all_squash)
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>       /srv/client01        -sync,rw server @trusted @external(ro)
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>       /foo            2001:db8:9:e54::/64(rw) 192.0.2.0/24(rw)
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>       /build          buildhost[0-9].local.domain(rw)
+</code></pre></div>
+<h3 id="24-etcexports">2.4. /etc/exports基本选项</h3>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">rw</td>
+<td align="left">允许客户端读写请求。</td>
+</tr>
+<tr>
+<td align="left">ro</td>
+<td align="left">只读。</td>
+</tr>
+<tr>
+<td align="left">sync</td>
+<td align="left">同步，仅在将更改提交到稳定存储之后才回复请求。(默认值)</td>
+</tr>
+<tr>
+<td align="left">async</td>
+<td align="left">异步，在将请求所做的任何更改提交到稳定存储之前回复该请求。</td>
+</tr>
+<tr>
+<td align="left">secure</td>
+<td align="left">此选项要求请求源自小于 IPPORT_RESERVED （1024） 的 Internet 端口。（默认值）</td>
+</tr>
+<tr>
+<td align="left">insecure</td>
+<td align="left">允许所有的端口。</td>
+</tr>
+<tr>
+<td align="left">subtree_check</td>
+<td align="left">此选项启用子树检查。（默认值）</td>
+</tr>
+<tr>
+<td align="left">no_subtree_check</td>
+<td align="left">此选项禁用子树检查，这具有轻微的安全隐患，但在某些情况下可以提高可靠性。</td>
+</tr>
+<tr>
+<td align="left">root_squash</td>
+<td align="left">将请求从 uid/gid 0 映射到匿名的 uid/gid。请注意，这不适用于可能同样敏感的任何其他 uid 或 gid，例如用户 bin 或组工作人员。</td>
+</tr>
+<tr>
+<td align="left">no_root_squash</td>
+<td align="left">关闭root映射。此选项主要对无磁盘客户机有用。</td>
+</tr>
+<tr>
+<td align="left">all_squash</td>
+<td align="left">将所有 uid 和 gid 映射到匿名用户。适用于 NFS 导出的公共 FTP 目录、新闻目录等。</td>
+</tr>
+<tr>
+<td align="left">no_all_squash</td>
+<td align="left">关闭所有普通用户（不包含root）映射。（默认值）</td>
+</tr>
+<tr>
+<td align="left">anonuid=UID</td>
+<td align="left">这些选项显式设置匿名帐户的 uid 和 gid。此选项主要用于 PC/NFS 客户端，您可能希望所有请求都显示为来自一个用户。例如，请考虑以下示例部分中 /home/joe 的导出条目，该条目将所有请求映射到 uid 150。</td>
+</tr>
+<tr>
+<td align="left">anongid=GID</td>
+<td align="left">见上文（anonuid=UID）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-nfs">2.5. 配置NFS开机自动挂载</h3>
+<p>手动mount NFS文件系统，当系统重新启动后，NFS文件系统将会被卸载掉。配置NFS文件系统开机自动挂载，有两种方式：
+1. fstab
+2. autofs</p>
+<h4 id="251-fstab">2.5.1. 使用fstab</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">[root@client01 ~]# </span>vi /etc/fstab
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="gp"># </span>add like follows to the end
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="go">192.168.1.101:/nfs_share   /mnt        nfs     defaults     0  0</span>
+</code></pre></div>
+<h4 id="252-auto-mounting">2.5.2. 配置auto-mounting</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="gp">[root@client01 ~]# </span>yum -y install autofs
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="gp">[root@client01 ~]# </span>systemctl <span class="nb">enable</span> --now autofs.service
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="gp">[root@client01 ~]# </span><span class="nb">cd</span> /net/
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="gp">[root@client01 net]# </span>ls
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="gp">[root@client01 net]# </span><span class="nb">cd</span> <span class="m">192</span>.168.1.101
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="gp">[root@client01 192.168.1.101]# </span>ls
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">nfs_share</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="gp">[root@client01 192.168.1.101]# </span>ls nfs_share/
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">abc.txt  demo_test.txt  nfs_demo.txt  nfs_test.txt  root2.txt  root.txt</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="gp">[root@client01 ~]# </span>df  -hT <span class="p">|</span>grep nfs
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="go">192.168.1.101:/nfs_share nfs4       17G  1.7G   16G   10% /net/192.168.1.101/nfs_share</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">[root@client01 ~]# </span>vi /etc/auto.master
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="gp"># </span>add follows to the end
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="go">/-    /etc/auto.mount</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="gp">[root@client01 ~]# </span>vi /etc/auto.mount
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="gp"># </span>create new : <span class="o">[</span>mount point<span class="o">]</span> <span class="o">[</span>option<span class="o">]</span> <span class="o">[</span>location<span class="o">]</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="go">/mntdir -fstype=nfs,rw  192.168.1.101:/nfs_share</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="gp">[root@client01 ~]# </span>mkdir /mntdir
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="gp">[root@client01 ~]# </span>systemctl restart autofs
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="gp"># </span>move to the mount point to make sure it normally mounted
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="gp">[root@client01 ~]# </span><span class="nb">cd</span> /mntdir
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="gp">[root@client01 mntdir]# </span>ls
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="go">abc.txt  demo_test.txt  nfs_demo.txt  nfs_test.txt  root2.txt  root.txt</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="gp">[root@client01 mntdir]# </span>df -hT <span class="p">|</span>grep  nfs
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="go">192.168.1.101:/nfs_share nfs4       17G  1.7G   16G   10% /mntdir</span>
+</code></pre></div>
+<h2 id="3">3. 实践任务</h2>
+<p>配置一个NFS服务器：</p>
+<ol>
+<li>NFS的共享目录/nfs/public ， 实现所有用户可写，并权限映射到zhangsan.</li>
+<li>NFS的共享目录/nfs/data, 实现root用户可写，其他用户只读，并不映射为匿名用户。</li>
+<li>配置客户端使用fstab实现重启后自动挂载nfs共享到/data目录。</li>
+<li>使用autofs实现访问时自动挂载nfs共享到/pub目录。</li>
+</ol>
+<h2 id="4">4. 扩展指引</h2>
+<ol>
+<li>
+<p>NFS如何固定服务的随机端口？</p>
+</li>
+<li>
+<p>NFS配置文件的帮助文档<code>man exports</code>。</p>
+</li>
+</ol>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="页脚" >
+      
+        
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="上一页: Welcome to MkDocs" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Welcome to MkDocs
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.48f2be22.min.js"></script>
+      
+    
+  </body>
+</html>
